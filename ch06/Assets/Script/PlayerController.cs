@@ -7,11 +7,9 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rigid2D;
     Animator animator;
-    public float jumpForce = 300f;
+    public float jumpForce = 200f;
     public float walkForce = 30f;
-    public float maxwalkSpeed = 2f;
-    float threshold = 0.2f;
-    
+    float maxWalkSpeed = 2f;
     
     // Start is called before the first frame update
     void Start()
@@ -24,24 +22,25 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && rigid2D.velocity.y == 0)
+        if (Input.GetKeyDown(KeyCode.Space) && rigid2D.velocity.y == 0)
         {
             animator.SetTrigger("JumpTrigger");
-            rigid2D.AddForce(transform.up *  jumpForce);
+            rigid2D.AddForce(transform.up * jumpForce);
         }
+        
 
         int key = 0;
-        if (Input.GetKey(KeyCode.RightArrow)) key = 1;
-        if (Input.GetKey(KeyCode.LeftArrow)) key = -1;
+        if(Input.GetKey(KeyCode.RightArrow)) key = 1;
+        if(Input.GetKey(KeyCode.LeftArrow)) key = -1;
 
         float speedx = Mathf.Abs(rigid2D.velocity.x);
 
-        if (speedx < maxwalkSpeed)
+        if (speedx < maxWalkSpeed)
         {
             rigid2D.AddForce(transform.right * key * walkForce);
         }
 
-        if (key != 0)
+        if(key != 0)
         {
             transform.localScale = new Vector3(key, 1, 1);
         }
@@ -59,11 +58,24 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene("GameScene");
         }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("°ñ");
         SceneManager.LoadScene("ClearScene");
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag != "Cloud") return;
+        transform.SetParent (collision.gameObject.transform);
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag != "Cloud") return;
+        transform.SetParent(null);
     }
 }

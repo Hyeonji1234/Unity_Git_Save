@@ -5,21 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class ClearDirector : MonoBehaviour
 {
+
+
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetMouseButtonDown(0))
+       if (Input.GetMouseButtonDown(0))
         {
-           // SceneManager.LoadScene("GameScene");
+            SceneManager.LoadScene("GameScene");
         }
-    }
-    public void PlayGame()
-    {
-        SceneManager.LoadScene("GameScene");
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
     }
 }
